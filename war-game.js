@@ -142,3 +142,115 @@ class Player {
         return this.points;
     }
 }
+
+// STEP 4: Create a Game class: players, deck, play method
+// A class that runs the entire game
+
+class Game {
+    // When we create a new game, set up the two players
+    constructor() {
+        this.player1 = new Player("Player 1");   // Create player 1
+        this.player2 = new Player("Player 2");   // Create player 2
+        this.round = 0;                          // Round counter helps us print "Round 1, Round 2, ..."
+    }
+
+    // This method starts the game
+    start() {
+        // Print a nice title
+        console.log("WAR CARD GAME");
+
+        // Create a new deck (it auto builds and shuffles in its constructor)
+        const deck = new Deck();
+
+        // Split the deck into two hands
+        const [hand1, hand2] = deck.deal();
+
+        // Give each player their cards
+        this.player1.addCards(hand1);
+        this.player2.addCards(hand2);
+
+        // Tell the player what we did
+        console.log("✓ Deck created and shuffled");
+        console.log("✓ Player 1 dealt 26 cards");
+        console.log("✓ Player 2 dealt 26 cards");
+
+        // Now actually play the game
+        this.playGame();
+    }
+
+    // This method plays all the rounds
+    playGame() {
+        // while loop is perfect here because we don't know "round number" upfront, so we just keep going until someone runs out of cards
+        while (this.player1.hasCards() && this.player2.hasCards()) {
+            // increase round number each loop
+            this.round++;
+            // Play one round
+            this.playRound();
+        }
+
+        // When we're out of cards, end the game, and we show final results
+        this.endGame();
+    }
+
+    // This method plays ONE round
+    playRound() {
+        // Each player plays one card from their hand
+        const card1 = this.player1.playCard();
+        const card2 = this.player2.playCard();
+
+        // Converts face values into numbers so we can compare them
+        const rank1 = card1.getRank();
+        const rank2 = card2.getRank();
+
+        // Print what cards were played
+        console.log(`Round ${this.round}:`);
+        console.log(`  Player 1 plays: ${card1.toString()}`);
+        console.log(`  Player 2 plays: ${card2.toString()}`);
+
+        // here we run a if statement to check who has the higher card
+        if (rank1 > rank2) {
+            // If player 1 has a higher card, they win the round
+            this.player1.addPoint();
+            console.log(`  ✓ Player 1 wins the round!`);
+        } else if (rank2 > rank1) {
+            // If player 2 has a higher card, they win the round
+            this.player2.addPoint();
+            console.log(`  ✓ Player 2 wins the round!`);
+        } else {
+            // Both cards are the same then it's a tie
+            console.log(`  ✓ Tie! No points awarded.`);
+        }
+
+        // Show the current score so we can see progress
+        console.log(`  Score: Player 1: ${this.player1.getScore()} | Player 2: ${this.player2.getScore()}`);
+    }
+
+    // This method shows the final results
+    endGame() {
+        console.log("GAME OVER");
+        console.log("Final Score:");
+        console.log(`  Player 1: ${this.player1.getScore()} points`);
+        console.log(`  Player 2: ${this.player2.getScore()} points`);
+
+        // Compare final scores to decide winner
+        if (this.player1.getScore() > this.player2.getScore()) {
+            // Player 1 has more points
+            console.log('Player 1 WINS THE GAME!');
+        } else if (this.player2.getScore() > this.player1.getScore()) {
+            // Player 2 has more points
+            console.log('Player 2 WINS THE GAME!');
+        } else {
+            // Both have the same points, then prints out TIE!
+            console.log('TIE!');
+        }
+    }
+}
+
+// STEP 5: Run the game and log print results
+// This actually starts everything
+
+// Create the game object (this sets up players + round counter)
+const game = new Game();
+
+// Start playing the game (setup + play + final results)
+game.start();
