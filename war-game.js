@@ -17,7 +17,7 @@
 
 // This array is our "list of suits" so we can reuse it when building the deck
 let cardSuits = ["Spades 🗡️", "Hearts ❤️", "Diamonds 💎", "Clubs 🍀"];
-console.log("Card Suits Example:", cardSuits);
+console.log("Card Suits", cardSuits);
 
 // STEP 1: Create a Card class: suit, rank, value
 // This class creates individual cards
